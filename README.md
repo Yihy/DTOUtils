@@ -2,8 +2,11 @@
 
 
 idea生成DTO转换类插件
-基于 [intellij-converter](https://github.com/me10zyl/intellij-converter) 插件修改,感谢原作者 @me10zyl
+ 基于 [intellij-converter](https://github.com/me10zyl/intellij-converter) 插件修改,感谢原作者 @me10zyl
 
+
+- English: Using this tool, you can generate Entity <=> Model code! 
+- 中文描述： 使用这个工具， 你可以生成实体互相转换(Entity<=>Model)代码！
 
 ----------------
 效果如下

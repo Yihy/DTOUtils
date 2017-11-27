@@ -1,12 +1,14 @@
-<idea-plugin>
+<idea-plugin url="https://github.com/Yihy/resources_cn">
   <id>cc.yihy.dto</id>
   <name>DTOUtils</name>
   <version>1.0.0</version>
-  <vendor email="yihy8023@gmail.com" url="https://www.yihy.cc">念去去云</vendor>
+  <vendor email="yihy8023@gmail.com" url="https://www.yihy.cc"/>
 
-  <description><![CDATA[
-      中文描述：<br/>
-      使用这个工具， 你可以生成实体互相转换(Entity<=>Model)代码！<br>
+  <description>
+
+    <![CDATA[
+      English: Using this tool, you can generate Entity <=> Model code! <br>
+      中文描述： 使用这个工具， 你可以生成实体互相转换(Entity<=>Model)代码！<br>
     ]]></description>
 
   <change-notes><![CDATA[
