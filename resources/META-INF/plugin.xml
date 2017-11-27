@@ -1,7 +1,7 @@
 <idea-plugin url="https://github.com/Yihy/resources_cn">
   <id>cc.yihy.dto</id>
   <name>DTOUtils</name>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <vendor email="yihy8023@gmail.com" url="https://www.yihy.cc"/>
 
   <description>
