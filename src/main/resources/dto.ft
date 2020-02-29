@@ -1,58 +1,58 @@
 public static ${model} get${shortModelName}(${entity} source){
-    ${model} target = null;
-    if (source != null) {
-        target = new ${model}();
+    if (source == null) {
+        return null;
+    }
+    ${model} target = new ${model}();
 #foreach($classModel in ${classModels})
 #set($modelProp = $classModel.model)
 #set($entityProp = $classModel.entity)
 #if(${entityProp.isEnable()}&&!${entityProp.isPlaceHolder()})
 #if(${modelProp.isPlaceHolder()})
-        target.set${entityProp.getNameUpperFirst()}(null);
+    target.set${entityProp.getNameUpperFirst()}(null);
 #else
-        target.set${entityProp.getNameUpperFirst()}(source.get${modelProp.getNameUpperFirst()}());
+    target.set${entityProp.getNameUpperFirst()}(source.get${modelProp.getNameUpperFirst()}());
 #end
 #end
 #end
-    }
     return target;
 }
 
 public static List<${model}> get${shortModelName}(List<${entity}> list) {
-    List<${model}> result = null;
-        if (list != null && !list.isEmpty()) {
-            result = new ArrayList<>(list.size());
-            for (${entity} tmp : list) {
-                result.add(get${shortModelName}(tmp));
-            }
-        }
+    if (list == null || list.isEmpty()) {
+        return Collections.emptyList();
+    }
+    List<${model}> result = new ArrayList<>(list.size());
+    for (${entity} tmp : list) {
+        result.add(get${shortModelName}(tmp));
+    }
     return result;
 }
 
 public static ${entity} convert${shortEntityName}(${model} source){
-    ${entity} target = null;
-    if (source != null) {
-        target = new ${entity}();
+    if (source == null) {
+        return null;
+    }
+    ${entity} target = new ${entity}();
 #foreach($classModel in ${classModels})
 #set($modelProp = $classModel.model)
 #set($entityProp = $classModel.entity)
 #if(${modelProp.isEnable()}&&!${modelProp.isPlaceHolder()})
 #if(${entityProp.isPlaceHolder()})
-        target.set${modelProp.getNameUpperFirst()}(null);
+    target.set${modelProp.getNameUpperFirst()}(null);
 #else
-        target.set${modelProp.getNameUpperFirst()}(source.get${entityProp.getNameUpperFirst()}());
+    target.set${modelProp.getNameUpperFirst()}(source.get${entityProp.getNameUpperFirst()}());
 #end
 #end
 #end
-    }
     return target;
 }
 public static List<${entity}> convert${shortEntityName}(List<${model}> list) {
-    List<${entity}> result = null;
-    if (list != null && !list.isEmpty()) {
-        result = new ArrayList<>(list.size());
-        for (${model} tmp : list) {
-            result.add(convert${shortEntityName}(tmp));
-        }
+    if (list == null || list.isEmpty()) {
+        return Collections.emptyList();
+    }
+    List<${entity}> result = new ArrayList<>(list.size());
+    for (${model} tmp : list) {
+        result.add(convert${shortEntityName}(tmp));
     }
     return result;
 }
