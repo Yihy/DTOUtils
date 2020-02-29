@@ -34,6 +34,10 @@ public class ClassProperty {
         this.name = name;
     }
 
+    public String getNameUpperFirst() {
+        return this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
+    }
+
     public ClassProperty(String name) {
         this.name = name;
     }

@@ -8,7 +8,7 @@ public class ActionRight extends AnAction {
 
     public ActionRight() {
         // Set the menu item name.
-        super("Add ?");
+        super("Add To Converter Model");
     }
 
     @Override

@@ -31,13 +31,13 @@ intellij {
     version = '2018.1'
 //    build = '2019.3.3'
     pluginName 'DTOUtils-IDEA'
-    updateSinceUntilBuild = true
+    updateSinceUntilBuild = false
     instrumentCode = false
     sandboxDirectory = project.rootDir.canonicalPath + "/.sandbox"
 }
 
 dependencies {
-    implementation('com.intellij:forms_rt:7.0.3') {
+    compileOnly('com.intellij:forms_rt:7.0.3') {
         transitive = false
     }
     compile fileTree(dir: 'lib', include: ['*.jar'])

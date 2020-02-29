@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class ActionLeft extends AnAction {
     public ActionLeft() {
         // Set the menu item name.
-        super("Add ?");
+        super("Add To Converter Entity");
     }
 
     @Override

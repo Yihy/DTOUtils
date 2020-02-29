@@ -64,11 +64,11 @@ public class Converter {
 
     private boolean existProperty(List<ClassProperty> list) {
         return list.stream()
-                .anyMatch(ClassProperty::isPlaceHolder);
+                .anyMatch(item -> !item.isPlaceHolder());
     }
 
     public String generate() {
-        if (existProperty(target) || existProperty(source)) {
+        if (!existProperty(target) || !existProperty(source)) {
             return "generate failed！property is empty";
         }
         String templateStr = loadTemplate("dto.ft");
