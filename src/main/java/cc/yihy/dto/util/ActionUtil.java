@@ -6,6 +6,7 @@ import cc.yihy.dto.entity.ClassProperty;
 import cc.yihy.dto.icon.DTOIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -26,44 +27,44 @@ public class ActionUtil {
 
     public static String TOOL_WINDOW_ID = "DTOUtils";
 
-    public static void left(AnActionEvent event){
+    public static void left(AnActionEvent event) {
         updateToolWindow(event, true);
     }
 
-    public static void right(AnActionEvent event){
+    public static void right(AnActionEvent event) {
         updateToolWindow(event, false);
     }
 
-    private static void updateToolWindow(AnActionEvent event, boolean left){
+    private static ToolWindow getOrRegisterToolWindow(Project project) {
+        ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+        ToolWindow toolWindow = toolWindowManager.getToolWindow(TOOL_WINDOW_ID);
+        if (toolWindow == null) {
+            ConverterToolWindowFactory factory = new ConverterToolWindowFactory();
+            toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, true, ToolWindowAnchor.RIGHT, project, true);
+            toolWindow.setIcon(DTOIcons.DTO_UTILS_PLUGIN);
+            factory.createToolWindowContent(project, toolWindow);
+        }
+        return toolWindow;
+    }
+
+    private static void updateToolWindow(@NotNull AnActionEvent event, boolean left) {
+        Project project = event.getProject();
+        ToolWindow toolWindow = getOrRegisterToolWindow(project);
+
         PsiFile psi = event.getData(LangDataKeys.PSI_FILE);
         List<PsiClass> classes = PsiTreeUtil.getChildrenOfTypeAsList(psi, PsiClass.class);
         PsiClass clazz = classes.get(0);
         PsiField[] allFields = clazz.getAllFields();
-        ConverterToolWindowFactory factory = new ConverterToolWindowFactory();
-        ToolWindowManager twm = ToolWindowManager.getInstance(event.getProject());
-        boolean isRegisted = false;
-        for(String s : twm.getToolWindowIds()){
-            if(TOOL_WINDOW_ID.equals(s)){
-                isRegisted = true;
-                break;
-            }
-        }
-        ToolWindow tw = null;
-        if(isRegisted) {
-            tw = ToolWindowManager.getInstance(event.getProject()).getToolWindow(TOOL_WINDOW_ID);
-        }else{
-            tw = twm.registerToolWindow(TOOL_WINDOW_ID, true, ToolWindowAnchor.RIGHT, event.getProject(), true);
-            factory.createToolWindowContent(event.getProject(), tw);
-        }
-        tw.setIcon(DTOIcons.DTOUtilsPlugin);
-        JComponent component = tw.getContentManager().getContent(0).getComponent();
-        GUI gui = (GUI)component;
+
+
+        JComponent component = toolWindow.getContentManager().getContent(0).getComponent();
+        GUI gui = (GUI) component;
         List<ClassProperty> props;
         List<ClassProperty> anotherProps;
-        if(left){
+        if (left) {
             props = gui.getProps1();
             anotherProps = gui.getProps2();
-        }else{
+        } else {
             props = gui.getProps2();
             anotherProps = gui.getProps1();
         }
@@ -71,11 +72,11 @@ public class ActionUtil {
         props.clear();
 
 
-        for(PsiField p : allFields){
-            if(p.hasModifierProperty("final")){
+        for (PsiField p : allFields) {
+            if (p.hasModifierProperty("final")) {
                 continue;
             }
-            ClassProperty classProp = new ClassProperty(p.getName());
+            ClassProperty classProp = new ClassProperty(p.getNameIdentifier().getText());
             classProp.setPsiField(p);
             classProp.setPsiClass(clazz);
             classProp.setEnable(true);
@@ -84,13 +85,13 @@ public class ActionUtil {
         }
 
         int diff = Math.abs(anotherProps.size() - props.size());
-        if(anotherProps.size() > props.size()){
-            for(int i = 0; (i < diff) && (props.size() > 0);i++){
+        if (anotherProps.size() > props.size()) {
+            for (int i = 0; (i < diff) && (props.size() > 0); i++) {
                 ClassProperty classProp = newNullProp();
                 props.add(classProp);
             }
-        }else{
-            for(int i = 0; (i< diff) && (anotherProps.size() > 0);i++){
+        } else {
+            for (int i = 0; (i < diff) && (anotherProps.size() > 0); i++) {
                 ClassProperty classProp = newNullProp();
                 anotherProps.add(classProp);
             }
@@ -99,26 +100,26 @@ public class ActionUtil {
         String title = "";
         String leftName = "?";
         String rightName = "?";
-        if(!gui.getProps1().isEmpty()){
+        if (!gui.getProps1().isEmpty()) {
             leftName = gui.getProps1().get(0).getPsiClass().getName();
         }
-        if(!gui.getProps2().isEmpty()){
+        if (!gui.getProps2().isEmpty()) {
             rightName = gui.getProps2().get(0).getPsiClass().getName();
         }
-        title = "(" + leftName + " → " + rightName + ")";
-        tw.setTitle(title);
+        title = "(" + leftName + " -> " + rightName + ")";
+        toolWindow.setTitle(title);
         gui.initWorld();
-        tw.show(null);
+        toolWindow.show(null);
     }
 
-    public static void  clearNullProp(List<ClassProperty> list){
+    public static void clearNullProp(List<ClassProperty> list) {
         List<ClassProperty> deleting = new ArrayList<>();
-        for(ClassProperty c : list){
-            if(c.isPlaceHolder()){
+        for (ClassProperty c : list) {
+            if (c.isPlaceHolder()) {
                 deleting.add(c);
             }
         }
-        for(ClassProperty delete : deleting){
+        for (ClassProperty delete : deleting) {
             list.remove(delete);
         }
     }

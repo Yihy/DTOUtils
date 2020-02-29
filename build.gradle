@@ -1,13 +1,26 @@
+buildscript {
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+        }
+        jcenter()
+        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+    }
+}
 plugins {
-    id 'org.jetbrains.intellij' version '0.2.18'
+    id 'org.jetbrains.intellij' version '0.4.16'
 }
 
 apply plugin: 'java'
-apply plugin: 'idea'
+//apply plugin: 'idea'
+//apply plugin: 'application'
 apply plugin: 'org.jetbrains.intellij'
 
 
 repositories {
+    maven {
+        url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+    }
     jcenter()
     mavenCentral()
     maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
@@ -15,13 +28,19 @@ repositories {
 }
 
 intellij {
-    version = 'IC-2016.1';
+    version = '2018.1'
+//    build = '2019.3.3'
     pluginName 'DTOUtils-IDEA'
-    updateSinceUntilBuild = false
+    updateSinceUntilBuild = true
     instrumentCode = false
     sandboxDirectory = project.rootDir.canonicalPath + "/.sandbox"
 }
 
 dependencies {
+    implementation('com.intellij:forms_rt:7.0.3') {
+        transitive = false
+    }
     compile fileTree(dir: 'lib', include: ['*.jar'])
 }
+
+

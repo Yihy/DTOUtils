@@ -9,5 +9,6 @@ public class DTOIcons {
         return IconLoader.getIcon(path, DTOIcons.class);
     }
 
-    public static final Icon DTOUtilsPlugin = load("/icon/candy_16.png"); // 16x16
+    /** 16x16 */
+    public static final Icon DTO_UTILS_PLUGIN = load("/icon/candy_16.png");
 }

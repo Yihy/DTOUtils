@@ -7,6 +7,7 @@ import com.intellij.psi.PsiField;
  * Created by ZyL on 2017/1/23.
  */
 public class ClassProperty {
+
     private String name;
 
     private boolean enable;
@@ -31,10 +32,6 @@ public class ClassProperty {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNameUpperFirst(){
-        return this.name.substring(0, 1).toUpperCase() + this.name.substring(1);
     }
 
     public ClassProperty(String name) {
