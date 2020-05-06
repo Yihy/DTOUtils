@@ -13,18 +13,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: install Gradle
-      run: |
-        sudo -E apt-get install -y wget unzip
-        wget "https://downloads.gradle-dn.com/distributions/gradle-5.6.4-bin.zip"
-        mkdir gradle
-        unzip gradle-5.6.4-bin.zip -d ./gradle
-        chmod +x ./gradle/gradle-5.6.4/bin/*
-        export PATH="$PATH:$(pwd)/gradle/gradle-5.6.4/bin"
     - name: Build with Gradle
       run: gradle buildPlugin
-    - name: Upload artifact
+    - name: Upload Plugin
       uses: actions/upload-artifact@master
       with:
         name: DTOUtils-IDEA
-        path: ./build/distributions/DTOUtils-IDEA.zip
+        path: build/distributions
