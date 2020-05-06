@@ -1,14 +1,11 @@
 package cc.yihy.dto.util;
 
-import cc.yihy.dto.ConverterToolWindowFactory;
 import cc.yihy.dto.GUI;
 import cc.yihy.dto.entity.ClassProperty;
-import cc.yihy.dto.icon.DTOIcons;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
@@ -35,21 +32,14 @@ public class ActionUtil {
         updateToolWindow(event, false);
     }
 
-    private static ToolWindow getOrRegisterToolWindow(Project project) {
+    private static ToolWindow getToolWindow(Project project) {
         ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
-        ToolWindow toolWindow = toolWindowManager.getToolWindow(TOOL_WINDOW_ID);
-        if (toolWindow == null) {
-            ConverterToolWindowFactory factory = new ConverterToolWindowFactory();
-            toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, true, ToolWindowAnchor.RIGHT, project, true);
-            toolWindow.setIcon(DTOIcons.DTO_UTILS_PLUGIN);
-            factory.createToolWindowContent(project, toolWindow);
-        }
-        return toolWindow;
+        return toolWindowManager.getToolWindow(TOOL_WINDOW_ID);
     }
 
     private static void updateToolWindow(@NotNull AnActionEvent event, boolean left) {
         Project project = event.getProject();
-        ToolWindow toolWindow = getOrRegisterToolWindow(project);
+        ToolWindow toolWindow = getToolWindow(project);
 
         PsiFile psi = event.getData(LangDataKeys.PSI_FILE);
         List<PsiClass> classes = PsiTreeUtil.getChildrenOfTypeAsList(psi, PsiClass.class);
